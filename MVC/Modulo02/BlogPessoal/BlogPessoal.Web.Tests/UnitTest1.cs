@@ -1,7 +1,7 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace BlogPessoal.Tests
+namespace BlogPessoal.Web.Tests
 {
     [TestClass]
     public class UnitTest1
