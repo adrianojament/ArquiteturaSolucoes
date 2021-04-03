@@ -1,0 +1,42 @@
+﻿@using BlogPessoal.Web.Models
+@model IEnumerable<CategoriaDeArtigo>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Categoria de Artigo</h2>
+
+<div>
+    @Html.ActionLink("Adicionar Categoria", "Create", null, new { @class= "btn btn-primary" })
+</div>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Nome
+            </th>
+            <th>
+                Descrição
+            </th>
+            <th>
+                Opções
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (CategoriaDeArtigo item in Model)
+        {
+            <tr>
+                <td>@item.Nome</td>
+                <td>@item.Descricao</td>
+                <td>
+                    @Html.ActionLink("Editar", "Edit", new { id = item.Id }, new { @class = "btn btn-success" })
+                    @Html.ActionLink("Excluir", "Delete", new { id = item.Id }, new { @class = "btn btn-danger" })                    
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+

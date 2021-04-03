@@ -95,6 +95,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Content\bootstrap-lume.css" />
     <Content Include="Content\bootstrap-theme.css" />
     <Content Include="Content\bootstrap-theme.min.css" />
     <Content Include="Content\bootstrap.css" />
@@ -109,13 +110,28 @@
     <Content Include="Scripts\jquery-1.10.2.min.js" />
     <Content Include="Scripts\modernizr-2.6.2.js" />
     <Content Include="Web.config" />
+    <Content Include="Views\Shared\_LayoutBlog.cshtml" />
+    <Content Include="Views\CategoriasDeArtigo\Index.cshtml" />
+    <Content Include="Views\CategoriasDeArtigo\Create.cshtml" />
+    <Content Include="Views\CategoriasDeArtigo\Edit.cshtml" />
+    <Content Include="Views\CategoriasDeArtigo\Delete.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="Controllers\ArtigosController.cs" />
+    <Compile Include="Controllers\AutoresController.cs" />
+    <Compile Include="Controllers\CategoriasDeArtigoController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Data\Contexto\BlogPessoalContexto.cs" />
+    <Compile Include="Data\Mapeamento\ArtigoMap.cs" />
+    <Compile Include="Data\Mapeamento\AutorMap.cs" />
+    <Compile Include="Data\Mapeamento\CategoriaDeArtigoMap.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\Artigo.cs" />
+    <Compile Include="Models\CategoriaDeArtigo.cs" />
+    <Compile Include="Models\Autor.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -137,7 +153,8 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Models\" />
+    <Folder Include="Views\Artigos\" />
+    <Folder Include="Views\Autores\" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
