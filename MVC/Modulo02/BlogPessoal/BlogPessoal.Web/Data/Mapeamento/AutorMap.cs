@@ -18,7 +18,7 @@ namespace BlogPessoal.Web.Data.Mapeamento
             Property(x => x.Nome).IsRequired().HasMaxLength(150).HasColumnName("nome");
             Property(x => x.eMail).IsRequired().HasMaxLength(150).HasColumnName("email");
             Property(x => x.Senha).IsRequired().HasMaxLength(50).HasColumnName("senha");
-            Property(x => x.Adminstrador).IsRequired().HasColumnName("adminstrador");
+            Property(x => x.Adminstrador).IsRequired().HasColumnName("administrador");
             Property(x => x.DataCadastro).IsRequired().HasColumnName("data_cadastro");
         }
     }

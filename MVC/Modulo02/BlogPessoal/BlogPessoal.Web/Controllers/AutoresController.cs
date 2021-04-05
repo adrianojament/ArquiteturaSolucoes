@@ -1,87 +1,128 @@
-﻿using BlogPessoal.Web.Data.Contexto;
-using BlogPessoal.Web.Models;
-using System;
+﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Data.Entity;
 using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
+using BlogPessoal.Web.Data.Contexto;
+using BlogPessoal.Web.Models;
 
 namespace BlogPessoal.Web.Controllers
 {
     public class AutoresController : Controller
     {
-        private readonly BlogPessoalContexto _ctx = new BlogPessoalContexto();
+        private BlogPessoalContexto db = new BlogPessoalContexto();
 
         // GET: Autores
         public ActionResult Index()
-        {            
-            return View(_ctx.Autores.OrderBy(a => a.Nome).ToList());
+        {
+            return View(db.Autores.ToList());
         }
 
+        // GET: Autores/Details/5
+        public ActionResult Details(int? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            Autor autor = db.Autores.Find(id);
+            if (autor == null)
+            {
+                return HttpNotFound();
+            }
+            return View(autor);
+        }
+
+        // GET: Autores/Create
         public ActionResult Create()
         {
             return View();
         }
 
+        // POST: Autores/Create
+        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
+        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
-        public ActionResult Create(Autor autor)
+        [ValidateAntiForgeryToken]
+        public ActionResult Create([Bind(Include = "Id,Nome,eMail,Senha,Adminstrador,DataCadastro")] Autor autor)
         {
             if (ModelState.IsValid)
             {
-                _ctx.Autores.Add(autor);
-                _ctx.SaveChanges();
+                db.Autores.Add(autor);
+                db.SaveChanges();
                 return RedirectToAction("Index");
             }
+
             return View(autor);
         }
 
+        // GET: Autores/Edit/5
         public ActionResult Edit(int? id)
         {
             if (id == null)
+            {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-
-            var autor = _ctx.Autores.Where(x => x.Id.Equals(id));
-
+            }
+            Autor autor = db.Autores.Find(id);
             if (autor == null)
-                return new HttpStatusCodeResult(HttpStatusCode.NotFound);
-
+            {
+                return HttpNotFound();
+            }
             return View(autor);
         }
 
-        [HttpPut]
-        public ActionResult Edit(Autor autor)
+        // POST: Autores/Edit/5
+        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
+        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Edit([Bind(Include = "Id,Nome,eMail,Senha,Adminstrador,DataCadastro")] Autor autor)
         {
             if (ModelState.IsValid)
             {
-                _ctx.Entry(autor).State = EntityState.Modified;
-                _ctx.SaveChanges();
+                db.Entry(autor).State = EntityState.Modified;
+                db.SaveChanges();
                 return RedirectToAction("Index");
             }
             return View(autor);
         }
 
+        // GET: Autores/Delete/5
         public ActionResult Delete(int? id)
         {
             if (id == null)
+            {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-
-            var autor = _ctx.Autores.Where(x => x.Id.Equals(id));
-
+            }
+            Autor autor = db.Autores.Find(id);
             if (autor == null)
-                return new HttpStatusCodeResult(HttpStatusCode.NotFound);
-
+            {
+                return HttpNotFound();
+            }
             return View(autor);
         }
 
-        [HttpPost]
-        public ActionResult Delete(int id)
+        // POST: Autores/Delete/5
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public ActionResult DeleteConfirmed(int id)
         {
-            var autor = _ctx.Autores.Find(id);
-            _ctx.Autores.Remove(autor);
-            _ctx.SaveChanges();
+            Autor autor = db.Autores.Find(id);
+            db.Autores.Remove(autor);
+            db.SaveChanges();
             return RedirectToAction("Index");
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                db.Dispose();
+            }
+            base.Dispose(disposing);
         }
     }
 }

@@ -144,6 +144,16 @@
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Scripts\jquery-1.10.2.min.map" />
+    <Content Include="Views\Autores\Create.cshtml" />
+    <Content Include="Views\Autores\Delete.cshtml" />
+    <Content Include="Views\Autores\Details.cshtml" />
+    <Content Include="Views\Autores\Edit.cshtml" />
+    <Content Include="Views\Autores\Index.cshtml" />
+    <Content Include="Views\Artigos\Create.cshtml" />
+    <Content Include="Views\Artigos\Delete.cshtml" />
+    <Content Include="Views\Artigos\Details.cshtml" />
+    <Content Include="Views\Artigos\Edit.cshtml" />
+    <Content Include="Views\Artigos\Index.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -153,8 +163,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Views\Artigos\" />
-    <Folder Include="Views\Autores\" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

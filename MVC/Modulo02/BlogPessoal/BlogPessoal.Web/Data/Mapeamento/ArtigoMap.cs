@@ -14,18 +14,22 @@ namespace BlogPessoal.Web.Data.Mapeamento
             ToTable("artigo", "dbo");
 
             HasKey(t => t.Id);
-            HasRequired(x => x.Autor)
-                .WithMany()
-                .HasForeignKey(x => x.Autor_Id);
-            HasRequired(x => x.CategoriaDeArtigo)
-                .WithMany()
-                .HasForeignKey(x => x.CategoriaDeArtigo_Id);
 
+            HasRequired(x => x.Autor)
+                .WithMany(t => t.Artigos)
+                .HasForeignKey(x => x.Autor_Id)
+                .WillCascadeOnDelete(false);
+
+            HasRequired(x => x.CategoriaDeArtigo)
+                .WithMany(t => t.Artigos)
+                .HasForeignKey(x => x.CategoriaDeArtigo_Id)
+                .WillCascadeOnDelete(false);
+            
             Property(x => x.Titulo).IsRequired().HasMaxLength(150).HasColumnName("Titulo");
             Property(x => x.Conteudo).IsRequired().HasColumnName("conteudo");
             Property(x => x.DataPublicacao).IsRequired().HasColumnName("data_publicacao");
             Property(x => x.Removido).IsRequired().HasColumnName("removido");
-            Property(x => x.CategoriaDeArtigo_Id).IsRequired().HasColumnName("catogoria_artigo_id");            
+            Property(x => x.CategoriaDeArtigo_Id).IsRequired().HasColumnName("categoria_artigo_id");            
             Property(x => x.Autor_Id).IsRequired().HasColumnName("autor_id");
         }
     }

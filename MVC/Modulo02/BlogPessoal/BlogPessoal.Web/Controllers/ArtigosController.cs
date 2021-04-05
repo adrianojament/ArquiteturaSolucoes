@@ -1,87 +1,137 @@
-﻿using BlogPessoal.Web.Data.Contexto;
-using BlogPessoal.Web.Models;
-using System;
+﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Data.Entity;
 using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
+using BlogPessoal.Web.Data.Contexto;
+using BlogPessoal.Web.Models;
 
 namespace BlogPessoal.Web.Controllers
 {
     public class ArtigosController : Controller
     {
-        private readonly BlogPessoalContexto _ctx = new BlogPessoalContexto();
+        private BlogPessoalContexto db = new BlogPessoalContexto();
 
         // GET: Artigos
         public ActionResult Index()
         {
-            return View(_ctx.Artigos.OrderBy(a => a.DataPublicacao).ToList());
+            var artigos = db.Artigos.Include(a => a.Autor).Include(a => a.CategoriaDeArtigo);
+            return View(artigos.ToList());
         }
 
+        // GET: Artigos/Details/5
+        public ActionResult Details(int? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            Artigo artigo = db.Artigos.Find(id);
+            if (artigo == null)
+            {
+                return HttpNotFound();
+            }
+            return View(artigo);
+        }
+
+        // GET: Artigos/Create
         public ActionResult Create()
         {
+            ViewBag.Autor_Id = new SelectList(db.Autores, "Id", "Nome");
+            ViewBag.CategoriaDeArtigo_Id = new SelectList(db.CategoriasDeArtigo, "Id", "Nome");
             return View();
         }
 
+        // POST: Artigos/Create
+        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
+        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
-        public ActionResult Create(Artigo artigo)
+        [ValidateAntiForgeryToken]
+        public ActionResult Create([Bind(Include = "Id,Titulo,Conteudo,DataPublicacao,Removido,CategoriaDeArtigo_Id,Autor_Id")] Artigo artigo)
         {
             if (ModelState.IsValid)
             {
-                _ctx.Artigos.Add(artigo);
-                _ctx.SaveChanges();
+                db.Artigos.Add(artigo);
+                db.SaveChanges();
                 return RedirectToAction("Index");
             }
+
+            ViewBag.Autor_Id = new SelectList(db.Autores, "Id", "Nome", artigo.Autor_Id);
+            ViewBag.CategoriaDeArtigo_Id = new SelectList(db.CategoriasDeArtigo, "Id", "Nome", artigo.CategoriaDeArtigo_Id);
             return View(artigo);
         }
 
+        // GET: Artigos/Edit/5
         public ActionResult Edit(int? id)
         {
             if (id == null)
+            {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-
-            var artigo = _ctx.Artigos.Where(x => x.Id.Equals(id));
-
+            }
+            Artigo artigo = db.Artigos.Find(id);
             if (artigo == null)
-                return new HttpStatusCodeResult(HttpStatusCode.NotFound);
-
+            {
+                return HttpNotFound();
+            }
+            ViewBag.Autor_Id = new SelectList(db.Autores, "Id", "Nome", artigo.Autor_Id);
+            ViewBag.CategoriaDeArtigo_Id = new SelectList(db.CategoriasDeArtigo, "Id", "Nome", artigo.CategoriaDeArtigo_Id);
             return View(artigo);
         }
 
-        [HttpPut]
-        public ActionResult Edit(Artigo artigo)
+        // POST: Artigos/Edit/5
+        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
+        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Edit([Bind(Include = "Id,Titulo,Conteudo,DataPublicacao,Removido,CategoriaDeArtigo_Id,Autor_Id")] Artigo artigo)
         {
             if (ModelState.IsValid)
             {
-                _ctx.Entry(artigo).State = EntityState.Modified;
-                _ctx.SaveChanges();
+                db.Entry(artigo).State = EntityState.Modified;
+                db.SaveChanges();
                 return RedirectToAction("Index");
+            }
+            ViewBag.Autor_Id = new SelectList(db.Autores, "Id", "Nome", artigo.Autor_Id);
+            ViewBag.CategoriaDeArtigo_Id = new SelectList(db.CategoriasDeArtigo, "Id", "Nome", artigo.CategoriaDeArtigo_Id);
+            return View(artigo);
+        }
+
+        // GET: Artigos/Delete/5
+        public ActionResult Delete(int? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            Artigo artigo = db.Artigos.Find(id);
+            if (artigo == null)
+            {
+                return HttpNotFound();
             }
             return View(artigo);
         }
 
-        public ActionResult Delete(int? id)
+        // POST: Artigos/Delete/5
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public ActionResult DeleteConfirmed(int id)
         {
-            if (id == null)
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-
-            var artigo = _ctx.Artigos.Where(x => x.Id.Equals(id));
-
-            if (artigo == null)
-                return new HttpStatusCodeResult(HttpStatusCode.NotFound);
-
-            return View(artigo);
+            Artigo artigo = db.Artigos.Find(id);
+            db.Artigos.Remove(artigo);
+            db.SaveChanges();
+            return RedirectToAction("Index");
         }
 
-        [HttpPost]
-        public ActionResult Delete(int id)
+        protected override void Dispose(bool disposing)
         {
-            var artigo = _ctx.Artigos.Find(id);
-            _ctx.Artigos.Remove(artigo);
-            _ctx.SaveChanges();
-            return RedirectToAction("Index");
+            if (disposing)
+            {
+                db.Dispose();
+            }
+            base.Dispose(disposing);
         }
     }
 }

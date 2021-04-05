@@ -18,6 +18,8 @@ namespace BlogPessoal.Web.Models
         [MaxLength(300, ErrorMessage = "Campo no maximo 300")]
         [Display(Name = "Descrição")]
         [DataType(DataType.MultilineText)]
+        [StringLength(300, MinimumLength =3, ErrorMessage ="No minimo 3 caracteres")]
+        [Required(ErrorMessage = "Campo Requerido")]
         public string Descricao { get; set; }
 
         public virtual ICollection<Artigo> Artigos { get; set; }

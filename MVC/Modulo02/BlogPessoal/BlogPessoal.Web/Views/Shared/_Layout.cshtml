@@ -21,7 +21,11 @@
                 @Html.ActionLink("Application name", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
             </div>
             <div class="navbar-collapse collapse">
-                <ul class="nav navbar-nav"></ul>
+                <ul class="nav navbar-nav">
+                    <li>@Html.ActionLink("Categorias de Artigo", "Index", "CategoriasDeArtigo")</li>
+                    <li>@Html.ActionLink("Autores", "Index", "Autores")</li>
+                    <li>@Html.ActionLink("Artigos", "Index", "Artigos")</li>                    
+                </ul>
             </div>
         </div>
     </div>
